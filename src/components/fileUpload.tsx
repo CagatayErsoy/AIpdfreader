@@ -16,10 +16,17 @@ const FileUpload = () => {
       file_key: string;
       file_name: string;
     }) => {
-      const response = await axios.post("/api/create-chat", {
-        file_key,
-        file_name,
-      });
+      const response = await axios.post(
+        "/api/create-chat",
+        {
+          file_key,
+          file_name,
+        }
+        // {
+        //   headers: { Accept: "application/json" },
+        // }
+      );
+
       return response.data;
     },
   });
@@ -28,7 +35,6 @@ const FileUpload = () => {
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
     onDrop: async (acceptedFiles) => {
-      // console.log(acceptedFiles);
       const file = acceptedFiles[0];
       if (file.size > 10 * 1024 * 1024) {
         toast.error(" File is too large");
@@ -43,7 +49,7 @@ const FileUpload = () => {
         }
         mutate(data, {
           onSuccess: (data) => {
-            toast.success(data.message);
+            // toast.success(data.message);
             console.log(data);
           },
           onError: (err) => {
