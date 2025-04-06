@@ -1,18 +1,16 @@
-import { OpenAIApi, Configuration } from "openai-edge";
+import OpenAI from "openai";
 
-const config = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(config);
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export async function getEmbedings(text: string) {
+export async function getEmbeddings(text: string) {
   try {
-    const response = await openai.createEmbedding({
-      model: "text-embedding-ada-002",
+    const result = await openai.embeddings.create({
+      model: "text-embedding-3-large",
       input: text.replace(/\n/g, ""),
+      dimensions: 2048,
     });
-    const result = await response.json();
-    return result.data[0].embedding as number[];
+
+    return result.data[0].embedding;
   } catch (error) {
     console.log("error calling openai embeddings api");
     throw error;
